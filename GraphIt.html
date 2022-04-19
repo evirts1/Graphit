@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<body>
+<canvas id="myCanvas"
+style="border:1px solid #d3d3d3;">
+Your browser does not support the canvas element.
+</canvas>
+<canvas id="myCanvas2"
+style="border:1px solid #d3d3d3;">
+Your browser does not support the canvas element.
+</canvas>
+<script>
+var formulaForPlottingALine = "y=mx+b";
+var canvas = document.getElementById("myCanvas");
+var canvas2 = document.getElementById("myCanvas2");
+var ctx = canvas.getContext("2d");
+var ctx2 = canvas2.getContext("2d");
+
+
+//var canvaswidth=screen.width,canvasheight=screen.height;
+var canvaswidth=400,canvasheight=400;
+var canvascenterx = canvaswidth/2,canvascentery = canvasheight/2;
+
+canvas.width = canvaswidth;
+canvas.height = canvasheight;
+canvas2.width = canvaswidth;
+canvas2.height = canvasheight;
+canvas2.left = canvaswidth;
+canvas2.right = canvas2.left + canvaswidth;
+
+
+var canXSeg = canvascenterx/10,canYSeg = canvascentery/10;
+
+ctx2.moveTo(0,200);
+ctx2.lineTo(canvas2.right,200);
+ctx2.stroke();
+ctx2.moveTo(200,0);
+ctx2.lineTo(200,400);
+ctx2.stroke();
+//drawLine(-300,0,300,0);
+//drawLine(0,300,0,-300);
+
+//drawLine(0,0,-200,100);
+
+for(i=0;i<11;i++)
+{
+	
+	drawLine(0,i*canYSeg,i*canXSeg,canvascentery);//++
+    drawLine(i*canXSeg,0,canvascenterx,i*canYSeg);//++
+    
+    drawLine(0,i*canYSeg,i*-canXSeg,canvascentery);//-+
+    drawLine(i*-canXSeg,0,-canvascenterx,i*canYSeg);//-+
+    
+    drawLine(0,i*-canYSeg,i*-canXSeg,-canvascentery);//--
+    drawLine(i*-canXSeg,0,-canvascenterx,i*-canYSeg);//--
+    
+    drawLine(0,i*-canYSeg,i*canXSeg,-canvascentery);//+-
+    drawLine(i*canXSeg,0,canvascenterx,i*-canYSeg);//+-
+}
+
+drawCircle(0,0,25,0,2*Math.PI);
+//fillRect1(-5,5,10,10,"#00FF00");
+
+function fillRect1(x1, y1, w, h,style){
+x1 = convertToCartesianPlaneX(x1,canvaswidth);
+y1 = convertToCartesianPlaneY(y1,canvasheight);
+ctx.fillStyle = style;
+ctx.fillRect(x1, y1, w, h);
+
+}
+
+function drawLine(x1,y1,x2,y2){
+
+x1 = convertToCartesianPlaneX(x1,canvaswidth);
+x2 = convertToCartesianPlaneX(x2,canvaswidth);
+y1 = convertToCartesianPlaneY(y1,canvasheight);
+y2 = convertToCartesianPlaneY(y2,canvasheight);
+
+ctx.moveTo(x1,y1);
+ctx.lineTo(x2,y2);
+ctx.stroke();
+
+}
+
+function drawCircle(x1,y1,radius,sa,ea){
+x1 = convertToCartesianPlaneX(x1,canvaswidth);
+y1 = convertToCartesianPlaneY(y1,canvasheight);
+ctx.beginPath();
+ctx.arc(x1,y1,radius,sa,ea);
+ctx.stroke();
+}
+
+function convertToCartesianPlaneX(x,w)
+{
+	var xout = x +(w/2);
+	return(xout);
+}
+
+function convertToCartesianPlaneY(y,h)
+{
+    var yout =  h - (y + (h/2));
+	return(yout);
+}
+
+function getSlope(x1,y1,x2,y2)
+{
+	//y=mx+b formula for a line
+	//x1 = convertToCartesianPlaneX(x1,canvaswidth);
+	//x2 = convertToCartesianPlaneX(x2,canvaswidth);
+	//y1 = convertToCartesianPlaneY(y1,canvasheight);
+	//y2 = convertToCartesianPlaneY(y2,canvasheight);
+
+	var m = ((y1-y2)/(x1-x2));
+	var b =	y1-(m*x1);
+	var y = (m*x1) + b;
+	return(m);
+}
+function getLineIntersectX(x1,y1,x2,y2,x3,y3,x4,y4)
+{
+	var m1 = ((y1-y2)/(x1-x2));
+	var b1 = y1-(m1*x1);
+	var ya = (m1*x1) + b1;
+	
+	var m2 = ((y3-y4)/(x3-x4));
+	var b2 = y3-(m2*x3);
+	var yb = (m2*x3) + b2;
+
+	//(m1*x1) + b1 = (m2*x3) + b2
+	
+}
+function getLineIntersectY(x1,y1,x2,y2,x3,y3,x4,y4)
+{
+	var m = ((y1-y2)/(x1-x2));
+	var b =	y1-(m*x1);
+	var y = (m*x1) + b;
+}
+
+//https://www.w3schools.com/code/tryit.asp?filename=GQ7RRAPWZDNV
+//https://www.w3schools.com/code/tryit.asp?filename=GQ8XR207BPZ5 
+</script>
+
+</body>
+</html>
